@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from surveys import satisfaction_survey
 
@@ -26,9 +26,17 @@ def home_page():
 @app.route('/questions/<int:idx>')
 def show_question(idx):
     """Shows question from the survey"""
-    question = survey.questions[idx].question
-    choices = survey.questions[idx].choices
-    return render_template('question.html', survey=survey, question=question, choices=choices, idx=idx)
+
+    if len(responses) >= len(survey.questions):
+        return redirect('/thank-you')
+
+    if idx == len(responses):
+        question = survey.questions[idx].question
+        choices = survey.questions[idx].choices
+        return render_template('question.html', survey=survey, question=question, choices=choices, idx=idx)
+    else:
+        flash("You are trying to access an invalid question.", "error")
+        return redirect(f'/questions/{len(responses)}')
 
 
 @app.route('/answer', methods=['POST'])
@@ -37,6 +45,9 @@ def add_answer():
     answer = request.form['answer']
     # Add to pretend database
     responses.append(answer)
+
+    # Redirect user to either the next question or
+    # thank you page if there are no more questions.
     if len(responses) < len(survey.questions):
         return redirect(f'/questions/{len(responses)}')
     else:

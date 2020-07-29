@@ -33,6 +33,7 @@ def show_question(idx):
 
 @app.route('/answer', methods=['POST'])
 def add_answer():
+    """Adds the answer to the pretend database and redirects the user"""
     answer = request.form['answer']
     # Add to pretend database
     responses.append(answer)
@@ -44,4 +45,5 @@ def add_answer():
 
 @app.route('/thank-you')
 def thank_you():
+    """Show the thank you page"""
     return render_template('thank-you.html')

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from surveys import satisfaction_survey
 
@@ -31,10 +31,11 @@ def show_question(idx):
         return redirect('/thank-you')
 
     if idx == len(responses):
-    question = survey.questions[idx].question
-    choices = survey.questions[idx].choices
-    return render_template('question.html', survey=survey, question=question, choices=choices, idx=idx)
+        question = survey.questions[idx].question
+        choices = survey.questions[idx].choices
+        return render_template('question.html', survey=survey, question=question, choices=choices, idx=idx)
     else:
+        flash("You are trying to access an invalid question.")
         return redirect(f'/questions/{len(responses)}')
 
 

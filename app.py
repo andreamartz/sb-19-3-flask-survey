@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, request, redirect
 from flask_debugtoolbar import DebugToolbarExtension
 from surveys import satisfaction_survey
 
@@ -29,3 +29,14 @@ def show_question(idx):
     question = survey.questions[idx].question
     choices = survey.questions[idx].choices
     return render_template('question.html', survey=survey, question=question, choices=choices, idx=idx)
+
+
+@app.route('/answer', methods=['POST'])
+def add_answer():
+    answer = request.form['answer']
+    # Add to pretend database
+    responses.append(answer)
+    if len(responses) < len(survey.questions):
+        return redirect(f'/questions/{len(responses)}')
+    else:
+        return redirect('/thank-you')

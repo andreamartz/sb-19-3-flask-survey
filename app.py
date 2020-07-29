@@ -40,3 +40,8 @@ def add_answer():
         return redirect(f'/questions/{len(responses)}')
     else:
         return redirect('/thank-you')
+
+
+@app.route('/thank-you')
+def thank_you():
+    return render_template('thank-you.html')

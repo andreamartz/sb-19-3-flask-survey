@@ -35,7 +35,7 @@ def show_question(idx):
         choices = survey.questions[idx].choices
         return render_template('question.html', survey=survey, question=question, choices=choices, idx=idx)
     else:
-        flash("You are trying to access an invalid question.")
+        flash("You are trying to access an invalid question.", "error")
         return redirect(f'/questions/{len(responses)}')
 
 

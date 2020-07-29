@@ -6,16 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="/static/app.css">
 </head>
 
 <body>
-  <section class="messages">
-    {% for msg in get_flashed_messages() %}
-    <p class="error">{{msg}}</p>
-    {% endfor %}
-  </section>
   <main id="content">
-    {% block content %}{% endblock %}
+    <section class="messages">
+      {% for category, msg in get_flashed_messages(with_categories=true) %}
+      <p class="{{category}}">{{msg}}</p>
+      {% endfor %}
+    </section>
+    <section>
+      {% block content %}{% endblock %}
+    </section>
   </main>
 </body>
 </body>
